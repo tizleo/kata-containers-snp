@@ -323,9 +323,12 @@ func (object Object) Valid() bool {
 // QemuParams returns the qemu parameters built out of this Object device.
 func (object Object) QemuParams(config *Config) []string {
 	var objectParams []string
+	var snpParams []string
 	var deviceParams []string
 	var driveParams []string
 	var qemuParams []string
+
+	dimmName := "dimm1"
 
 	switch object.Type {
 	case MemoryBackendFile:
@@ -366,6 +369,11 @@ func (object Object) QemuParams(config *Config) []string {
 		objectParams = append(objectParams, fmt.Sprintf("cbitpos=%d", object.CBitPos))
 		objectParams = append(objectParams, fmt.Sprintf("reduced-phys-bits=%d", object.ReducedPhysBits))
 
+		snpParams = append(snpParams, "memory-backend-memfd-private")
+		snpParams = append(snpParams, fmt.Sprintf("id=%s", dimmName))
+		snpParams = append(snpParams, fmt.Sprintf("size=%dM", 2048)) // TODO: make this configurable
+		snpParams = append(snpParams, "share=true")
+
 		driveParams = append(driveParams, "if=pflash,format=raw,readonly=on")
 		driveParams = append(driveParams, fmt.Sprintf("file=%s", object.File))
 	case SecExecGuest:
@@ -388,6 +396,11 @@ func (object Object) QemuParams(config *Config) []string {
 	if len(objectParams) > 0 {
 		qemuParams = append(qemuParams, "-object")
 		qemuParams = append(qemuParams, strings.Join(objectParams, ","))
+	}
+
+	if len(snpParams) > 0 {
+		qemuParams = append(qemuParams, "-object")
+		qemuParams = append(qemuParams, strings.Join(snpParams, ","))
 	}
 
 	if len(driveParams) > 0 {
