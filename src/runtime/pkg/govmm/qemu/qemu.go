@@ -323,6 +323,7 @@ func (object Object) Valid() bool {
 // QemuParams returns the qemu parameters built out of this Object device.
 func (object Object) QemuParams(config *Config) []string {
 	var objectParams []string
+	var machineParams []string
 	var snpParams []string
 	var deviceParams []string
 	var driveParams []string
@@ -374,6 +375,8 @@ func (object Object) QemuParams(config *Config) []string {
 		snpParams = append(snpParams, fmt.Sprintf("size=%dM", 2048)) // TODO: make this configurable
 		snpParams = append(snpParams, "share=true")
 
+		machineParams = append(machineParams, "memory-backend="+dimmName+",kvm-type=protected")
+
 		driveParams = append(driveParams, "if=pflash,format=raw,readonly=on")
 		driveParams = append(driveParams, fmt.Sprintf("file=%s", object.File))
 	case SecExecGuest:
@@ -396,6 +399,11 @@ func (object Object) QemuParams(config *Config) []string {
 	if len(objectParams) > 0 {
 		qemuParams = append(qemuParams, "-object")
 		qemuParams = append(qemuParams, strings.Join(objectParams, ","))
+	}
+
+	if len(machineParams) > 0 {
+		qemuParams = append(qemuParams, "-machine")
+		qemuParams = append(qemuParams, strings.Join(machineParams, ","))
 	}
 
 	if len(snpParams) > 0 {
