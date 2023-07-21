@@ -328,7 +328,7 @@ func (object Object) QemuParams(config *Config) []string {
 	var driveParams []string
 	var qemuParams []string
 
-	dimmName := "dimm1"
+	dimmName := "dimm2"
 
 	switch object.Type {
 	case MemoryBackendFile:
