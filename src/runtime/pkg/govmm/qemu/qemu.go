@@ -3174,7 +3174,7 @@ func LaunchCustomQemu(ctx context.Context, path string, params []string, fds []*
 		path = "qemu-system-x86_64"
 	}
 
-	logger.infof("launching %s with: %v", path, params)
+	logger.Infof("launching %s with: %v", path, params)
 
 	/* #nosec */
 	cmd := exec.CommandContext(ctx, path, params...)
