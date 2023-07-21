@@ -328,7 +328,7 @@ func (object Object) QemuParams(config *Config) []string {
 	var driveParams []string
 	var qemuParams []string
 
-	dimmName := "dimm2"
+	dimmName := "dimm1"
 
 	switch object.Type {
 	case MemoryBackendFile:
@@ -2999,8 +2999,8 @@ func (config *Config) appendMemoryKnobs() {
 	if config.Knobs.MemPrealloc {
 		objMemParam += ",prealloc=on"
 	}
-	config.qemuParams = append(config.qemuParams, "-object")
-	config.qemuParams = append(config.qemuParams, objMemParam)
+	// config.qemuParams = append(config.qemuParams, "-object")
+	// config.qemuParams = append(config.qemuParams, objMemParam)
 
 	if isDimmSupported(config) {
 		config.qemuParams = append(config.qemuParams, "-numa")
