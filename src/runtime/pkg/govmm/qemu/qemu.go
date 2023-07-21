@@ -3128,6 +3128,12 @@ func LaunchQemu(config Config, logger QMPLog) (*exec.Cmd, io.ReadCloser, error) 
 	config.appendFwCfg(logger)
 	config.appendSeccompSandbox()
 
+	// open a file called "qemu" at /tmp
+	f, err := os.OpenFile("/tmp/qemu", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+	if err != nil {
+		f.WriteString("test")
+	}
+
 	if err := config.appendCPUs(); err != nil {
 		return nil, nil, err
 	}
