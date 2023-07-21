@@ -3131,7 +3131,7 @@ func LaunchQemu(config Config, logger QMPLog) (*exec.Cmd, io.ReadCloser, error) 
 	// open a file called "qemu" at /tmp
 	f, err := os.OpenFile("/tmp/qemu", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
 	if err == nil {
-		f.WriteString(strings.Join(config.qemuParams, " "))
+		f.WriteString(strings.Join(config.qemuParams, "\n"))
 	}
 
 	if err := config.appendCPUs(); err != nil {
