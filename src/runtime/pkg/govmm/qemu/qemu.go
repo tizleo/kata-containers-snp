@@ -3007,7 +3007,7 @@ func (config *Config) appendMemoryKnobs() {
 		config.qemuParams = append(config.qemuParams, numaMemParam)
 	} else {
 		config.qemuParams = append(config.qemuParams, "-machine")
-		config.qemuParams = append(config.qemuParams, "memory-backend="+dimmName+",kvm-type=protected")
+		config.qemuParams = append(config.qemuParams, "memory-backend="+dimmName)
 	}
 }
 
